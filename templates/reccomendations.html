@@ -1,0 +1,20 @@
+<!doctype html>
+
+<html>
+    <title>
+        Movie Recommendation Project
+    </title>
+
+    <body>
+        <h1> Reccomendations </h1>
+        <table>
+            {% for item in titles %}
+                <p>
+                    <form action = "{{url_for('repredict')}}" method="post" >
+                        <button type='submit' name = 'selected_again' id = 'selected_again' value="{{ item }}">{{item}}</button>
+                    </form>
+                </p>
+            {% endfor %}
+        </table>
+    </body>
+</html>
