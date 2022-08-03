@@ -6,7 +6,10 @@
     </title>
 
     <body>
-        <h1>SELECT THE NAME OF YOUR MOVIE</h1>
+        <h2>Type the name of your moveie</h2>
+        {% include 'search.html' %}
+
+        <h1>SELECT YOUR MOVIE</h1>
 
         <table>
             {% for item in titles %}

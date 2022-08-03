@@ -30,11 +30,22 @@ def list_title():
     if len(title) == 1:
         titles = title_df[title_df['primaryTitle'].str.contains(title[0])].primaryTitle
     else:
+        lens = {}
         i = 0
-        titles = title_df[title_df['primaryTitle'].str.contains(title[0])].primaryTitle
+        titles = title_df[title_df['primaryTitle'].str.contains(title[i])].primaryTitle
+        lens[title[i]] = len(titles)
         while len(titles) > 50:
             i += 1
+            print(title[i])
             titles = title_df[title_df['primaryTitle'].str.contains(title[i])].primaryTitle
+            lens[title[i]] = len(titles)
+            if i + 1 == len(title):
+                break
+        min_val = min(lens.values())
+        for k in lens.keys():
+            if lens[k] == min_val:
+                titles = title_df[title_df['primaryTitle'].str.contains(k)].primaryTitle
+
     return render_template('titles_list.html', titles = titles)
 
 @app.route('/prediction', methods = ['GET','POST'])
@@ -44,7 +55,7 @@ def prediction():
         print(selected)
     else:
         selected = session['formdata']
-        print(type(selected))
+        selected
     
     id = title_df[title_df['primaryTitle'] == selected].index[0]
     dist, n = knn.kneighbors(np.array(train_rating.loc[id, :]).reshape(1,-1))
