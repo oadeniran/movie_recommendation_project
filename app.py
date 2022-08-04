@@ -1,6 +1,6 @@
 import numpy as np
 import pandas as pd
-from flask import Flask, request, render_template, session, redirect, url_for
+from flask import Flask, request, render_template, session, redirect, url_for, flash
 from sklearn.neighbors import NearestNeighbors
 import pickle
 
@@ -28,23 +28,20 @@ def index():
 def list_title():
     title = request.form['moviename'].split(' ')
     if len(title) == 1:
-        titles = title_df[title_df['primaryTitle'].str.contains(title[0])].primaryTitle
+        error = None
+        if len(title[0]) <= 3:
+            error = 'Word is too short'
+            return render_template('index.html', error = error)
+        else:
+            flash('Succesful')
+            titles = title_df[title_df['primaryTitle'].str.contains(title[0])].primaryTitle
     else:
-        lens = {}
-        i = 0
-        titles = title_df[title_df['primaryTitle'].str.contains(title[i])].primaryTitle
-        lens[title[i]] = len(titles)
-        while len(titles) > 50:
-            i += 1
-            print(title[i])
-            titles = title_df[title_df['primaryTitle'].str.contains(title[i])].primaryTitle
-            lens[title[i]] = len(titles)
-            if i + 1 == len(title):
-                break
-        min_val = min(lens.values())
-        for k in lens.keys():
-            if lens[k] == min_val:
-                titles = title_df[title_df['primaryTitle'].str.contains(k)].primaryTitle
+        titles = title_df.copy()
+        for word in title:
+            if word != 'of':
+                word = word.capitalize()
+            titles = pd.DataFrame(titles[titles['primaryTitle'].str.contains(word)].primaryTitle)
+        titles = titles['primaryTitle']
 
     return render_template('titles_list.html', titles = titles)
 
@@ -55,7 +52,7 @@ def prediction():
         print(selected)
     else:
         selected = session['formdata']
-        selected
+        print(selected)
     
     id = title_df[title_df['primaryTitle'] == selected].index[0]
     dist, n = knn.kneighbors(np.array(train_rating.loc[id, :]).reshape(1,-1))
@@ -72,4 +69,4 @@ def repredict():
     
 
 if __name__ == "__main__":
-    app.run(debug = True)
+    app.run(debug = False)

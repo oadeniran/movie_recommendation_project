@@ -1,13 +1,30 @@
 <!doctype html>
 
 <html>
-    <title>
-        Movie Recommendation Project
-    </title>
+    <head>
+        <title>
+            Movie Recommendation Project
+        </title>
 
-    <body>
-        <h1>WELCOME!!</h1>
-        <h2>TYPE IN THE NAME(OR MOST IMPORTANT TERM) OF YOUR MOVIE</h2>
-        {% include 'search.html' %}
-    </body>
+        <style>
+            body {font-family: Verdana, Geneva, Tahoma, sans-serif;
+            background-color: aliceblue;
+            text-align: center;}
+            h1 {font-family: cursive, Georgia, 'Times New Roman', Times, serif;
+                text-align: center;
+                color: rgb(25, 214, 214);}
+            h2 {font-style: italic; font-family: 'Courier New', Courier, monospace;}
+        </style>
+    
+        <body>
+            <h1>WELCOME!!</h1>
+            <br>
+            <h2>TYPE IN THE NAME(OR MOST IMPORTANT TERM) OF YOUR MOVIE</h2>
+            <br>
+            {% if error %}
+                <p class="error"><strong>Error:</strong>{{ error}} </p>
+            {% endif %}
+            {% include 'search.html' %}
+        </body>
+    </head>
 </html>

@@ -1,9 +1,33 @@
 <!doctype html>
 
 <html>
-    <title>
-        Movie Recommendation Project
-    </title>
+    <head>
+        <title>
+            Movie Recommendation Project
+        </title>
+        <style type="text/css">
+            body {font-family: Verdana, Geneva, Tahoma, sans-serif;}
+            h1 {font-family: cursive, Georgia, 'Times New Roman', Times, serif;}
+            h2 {font-style: italic; font-family: 'Courier New', Courier, monospace;}
+            .btn {
+                cursor: pointer;
+                background-color: rgb(255, 248, 248);
+                border: 10pt;
+                font-size: 24px;
+                width: 100%;
+                padding: 32px 16px;
+            }
+            .btn:hover{
+                background-color: rgb(252, 243, 243);
+            }
+            .btn:active{
+                background-color: rgb(252, 243, 243);
+                box-shadow: 0 5px #666;
+                transform: translateY(4px);
+            }
+
+        </style>
+    </head>
 
     <body>
         <h2>Type the name of your moveie</h2>
@@ -15,7 +39,9 @@
             {% for item in titles %}
                 <p>
                     <form action = "{{url_for('prediction')}}" method="post" >
-                        <button type='submit' name = 'selected' id = 'selected' value="{{ item }}">{{item}}</button>
+                        <button class="btn"  type='submit' name = 'selected' id = 'selected' value="{{ item }}">
+                            {{item}}
+                        </button>
                     </form>
                 </p>
             {% endfor %}
